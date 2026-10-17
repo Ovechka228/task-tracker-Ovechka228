@@ -1,9 +1,11 @@
 {% extends "../base.html" %}
 {% block content %}
   <a href="{% url "tasks:task-create" %}">Нова задача</a>
-  <form method="get">
+  <form class="row row-cols-lg-auto g-3 align-items-center" method="get">
     {{ form.as_div }}
-    <button type="submit">Фільтрувати</button>
+    <div class="col-12">
+      <button class="btn btn-primary" type="submit">Фільтрувати</button>
+    </div>
   </form>
   <ul>
     {% for task in tasks %}
