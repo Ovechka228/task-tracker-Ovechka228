@@ -1,0 +1,10 @@
+{% extends "../base.html" %}
+{% block content %}
+  <h1>{{ task.title }}</h1>
+  <p>{{ task.desc }}</p>
+  <p>Статус: {{ task.get_status_display }}</p>
+  <p>Пріоритет: {{ task.get_priority_display }}</p>
+  <p>Дедлайн: {{ task.due_to|date:"d.m.Y H:i" }}</p>
+  <p>Створена: {{ task.created_at|date:"d.m.Y H:i" }}</p>
+  <a href="{% url "tasks:task-list" %}">До списку задач</a>
+{% endblock content %}
