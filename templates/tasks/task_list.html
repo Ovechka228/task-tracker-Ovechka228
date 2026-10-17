@@ -1,11 +1,17 @@
 {% extends "../base.html" %}
 {% block content %}
   <a href="{% url "tasks:task-create" %}">Нова задача</a>
+  <form method="get">
+    {{ form.as_div }}
+    <button type="submit">Фільтрувати</button>
+  </form>
   <ul>
     {% for task in tasks %}
       <li>
         <a href="{% url "tasks:task-detail" task.pk %}">{{ task }}</a>
       </li>
+    {% empty %}
+      <li>Задач немає :(</li>
     {% endfor %}
   </ul>
 {% endblock content %}
