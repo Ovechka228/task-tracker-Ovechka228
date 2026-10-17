@@ -3,7 +3,7 @@ from django.forms import BaseModelForm
 from django.urls import reverse_lazy
 from django.views import generic
 
-from . import forms, models
+from . import forms, mixins, models
 
 
 class TaskCreateView(LoginRequiredMixin, generic.CreateView):
@@ -27,13 +27,13 @@ class TaskListView(generic.ListView):
     template_name = 'tasks/task_list.html'
 
 
-class TaskUpdateView(LoginRequiredMixin, generic.UpdateView):
+class TaskUpdateView(LoginRequiredMixin, mixins.UserIsOwnerMixin, generic.UpdateView):
     model = models.Task
     form_class = forms.TaskCreateForm
     template_name = 'tasks/task_update_form.html'
 
 
-class TaskDeleteView(LoginRequiredMixin, generic.DeleteView):
+class TaskDeleteView(LoginRequiredMixin, mixins.UserIsOwnerMixin, generic.DeleteView):
     model = models.Task
     context_object_name = 'task'
     template_name = 'tasks/task_delete.html'
