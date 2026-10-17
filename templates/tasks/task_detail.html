@@ -6,5 +6,8 @@
   <p>Пріоритет: {{ task.get_priority_display }}</p>
   <p>Дедлайн: {{ task.due_to|date:"d.m.Y H:i" }}</p>
   <p>Створена: {{ task.created_at|date:"d.m.Y H:i" }}</p>
+  <p>Автор: {{ task.creator.username }}</p>
+  <a href="{% url "tasks:task-update" task.pk %}">Оновити</a>
+  <a href="{% url "tasks:task-delete" task.pk %}">Видалити</a>
   <a href="{% url "tasks:task-list" %}">До списку задач</a>
 {% endblock content %}

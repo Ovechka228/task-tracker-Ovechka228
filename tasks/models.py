@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
 
@@ -25,6 +26,7 @@ class Task(models.Model):
         max_length=10, choices=PRIORITY_CHOICES, default='medium', verbose_name='Пріоритет'
     )
     due_to = models.DateTimeField(verbose_name='Дедлайн')
+    creator = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
