@@ -1,0 +1,11 @@
+{% extends "../base.html" %}
+{% block content %}
+  <a href="{% url "tasks:task-create" %}">Нова задача</a>
+  <ul>
+    {% for task in tasks %}
+      <li>
+        <a href="{% url "tasks:task-detail" task.pk %}">{{ task }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock content %}
