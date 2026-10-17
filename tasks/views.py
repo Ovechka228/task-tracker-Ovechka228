@@ -26,6 +26,23 @@ class TaskListView(generic.ListView):
     context_object_name = 'tasks'
     template_name = 'tasks/task_list.html'
 
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['form'] = forms.TaskFilterForm(self.request.GET)
+        return ctx
+
+    def get_queryset(self):
+        tasks = super().get_queryset()
+
+        status = self.request.GET.get('status', '')
+        if status:
+            tasks = tasks.filter(status=status)
+        priority = self.request.GET.get('priority', '')
+        if priority:
+            tasks = tasks.filter(priority=priority)
+
+        return tasks
+
 
 class TaskUpdateView(LoginRequiredMixin, mixins.UserIsOwnerMixin, generic.UpdateView):
     model = models.Task
