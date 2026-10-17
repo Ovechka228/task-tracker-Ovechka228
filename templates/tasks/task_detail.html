@@ -9,5 +9,26 @@
   <p>Автор: {{ task.creator.username }}</p>
   <a href="{% url "tasks:task-update" task.pk %}">Оновити</a>
   <a href="{% url "tasks:task-delete" task.pk %}">Видалити</a>
+  <!-- Коментарі -->
+  <div class="mt-4">
+    <h3>Коментарі</h3>
+    {% for comment in task.comments.all %}
+      <div class="comment mb-2">
+        <p>{{ comment.content }}</p>
+        <small>Автор: {{ comment.author.username }}</small>
+      </div>
+    {% empty %}
+      <p>Коментарі відсутні.</p>
+    {% endfor %}
+  </div>
+  <!-- Форма додавання коментаря -->
+  <div class="mt-4">
+    <h4>Додати коментар</h4>
+    <form action="{% url 'tasks:task-detail' task.pk %}" method="post">
+      {% csrf_token %}
+      {{ comment_form.as_div }}
+      <button type="submit" class="btn btn-primary">Відправити</button>
+    </form>
+  </div>
   <a href="{% url "tasks:task-list" %}">До списку задач</a>
 {% endblock content %}

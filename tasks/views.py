@@ -1,5 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import BaseModelForm
+from django.http import HttpRequest
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views import generic
 
@@ -19,6 +21,23 @@ class TaskDetailView(generic.DetailView):
     model = models.Task
     context_object_name = 'task'
     template_name = 'tasks/task_detail.html'
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['comment_form'] = forms.CommentForm()
+        return ctx
+
+    def post(self, request: HttpRequest, *args, **kwargs):
+        comment_form = forms.CommentForm(request.POST)
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.author = request.user
+            comment.task = self.get_object()
+            comment.save()
+            return redirect('tasks:task-detail', pk=comment.task.pk)
+        else:
+            # Випадок невалідної форми
+            pass
 
 
 class TaskListView(generic.ListView):
@@ -55,3 +74,15 @@ class TaskDeleteView(LoginRequiredMixin, mixins.UserIsOwnerMixin, generic.Delete
     context_object_name = 'task'
     template_name = 'tasks/task_delete.html'
     success_url = reverse_lazy('tasks:task-list')
+
+
+class CommentUpdateView(LoginRequiredMixin, mixins.UserIsAuthorMixin, generic.UpdateView):
+    model = models.Comment
+    form_class = forms.CommentForm
+    template_name = 'tasks/comment_update.html'
+
+
+class CommentDeleteView(LoginRequiredMixin, mixins.UserIsAuthorMixin, generic.DeleteView):
+    model = models.Comment
+    context_object_name = 'comment'
+    template_name = 'tasks/comment_delete.html'

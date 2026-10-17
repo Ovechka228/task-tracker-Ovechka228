@@ -39,3 +39,18 @@ class Task(models.Model):
         verbose_name = 'Задача'
         verbose_name_plural = 'Задачі'
         ordering = ['due_to', 'created_at']
+
+
+class Comment(models.Model):
+    task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='comments')
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments')
+    content = models.TextField(max_length=400)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Comment on #{self.task.pk} by {self.author.username}'
+
+    class Meta:
+        verbose_name = 'Коментар'
+        verbose_name_plural = 'Коментарі'
+        ordering = ['-created_at']

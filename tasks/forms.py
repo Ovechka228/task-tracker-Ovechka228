@@ -50,3 +50,9 @@ class TaskFilterForm(forms.Form):
         required=False,
         widget=forms.Select(attrs={'class': 'form-select'}),
     )
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = models.Comment
+        fields = ['content']
