@@ -12,7 +12,7 @@ class TaskCreateView(LoginRequiredMixin, generic.CreateView):
     form_class = forms.TaskCreateForm
     template_name = 'tasks/task_create_form.html'
 
-    def form_valid(self, form: BaseModelForm[models.Task]):
+    def form_valid(self, form: BaseModelForm):
         form.instance.creator = self.request.user
         return super().form_valid(form)
 

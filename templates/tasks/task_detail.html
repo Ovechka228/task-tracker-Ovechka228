@@ -1,34 +1,23 @@
-{% extends "../base.html" %}
+{% extends 'base.html' %}
+
 {% block content %}
-  <h1>{{ task.title }}</h1>
-  <p>{{ task.desc }}</p>
-  <p>Статус: {{ task.get_status_display }}</p>
-  <p>Пріоритет: {{ task.get_priority_display }}</p>
-  <p>Дедлайн: {{ task.due_to|date:"d.m.Y H:i" }}</p>
-  <p>Створена: {{ task.created_at|date:"d.m.Y H:i" }}</p>
-  <p>Автор: {{ task.creator.username }}</p>
-  <a href="{% url "tasks:task-update" task.pk %}">Оновити</a>
-  <a href="{% url "tasks:task-delete" task.pk %}">Видалити</a>
-  <!-- Коментарі -->
-  <div class="mt-4">
-    <h3>Коментарі</h3>
-    {% for comment in task.comments.all %}
-      <div class="comment mb-2">
-        <p>{{ comment.content }}</p>
-        <small>Автор: {{ comment.author.username }}</small>
-      </div>
-    {% empty %}
-      <p>Коментарі відсутні.</p>
-    {% endfor %}
-  </div>
-  <!-- Форма додавання коментаря -->
-  <div class="mt-4">
-    <h4>Додати коментар</h4>
-    <form action="{% url 'tasks:task-detail' task.pk %}" method="post">
-      {% csrf_token %}
-      {{ comment_form.as_div }}
-      <button type="submit" class="btn btn-primary">Відправити</button>
-    </form>
-  </div>
-  <a href="{% url "tasks:task-list" %}">До списку задач</a>
-{% endblock content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h2 class="card-title mb-3">{{ task.title }}</h2>
+                <hr>
+                <p class="card-text fs-5 text-secondary">{{ task.description }}</p>
+                
+                <div class="d-flex justify-content-between align-items-center mt-4">
+                    <a href="{% url 'tasks:task-list' %}" class="btn btn-secondary">Back to List</a>
+                    <div>
+                        <a href="{% url 'tasks:task-update' task.pk %}" class="btn btn-outline-secondary me-2">Edit</a>
+                        <a href="{% url 'tasks:task-delete' task.pk %}" class="btn btn-outline-danger">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

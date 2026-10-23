@@ -1,19 +1,33 @@
-{% extends "../base.html" %}
+{% extends 'base.html' %}
+
 {% block content %}
-  <a href="{% url "tasks:task-create" %}">Нова задача</a>
-  <form class="row row-cols-lg-auto g-3 align-items-center" method="get">
-    {{ form.as_div }}
-    <div class="col-12">
-      <button class="btn btn-primary" type="submit">Фільтрувати</button>
+<div class="row mb-3 align-items-center">
+    <div class="col-md-6">
+        <h2>Your Tasks</h2>
     </div>
-  </form>
-  <ul>
-    {% for task in tasks %}
-      <li>
-        <a href="{% url "tasks:task-detail" task.pk %}">{{ task }}</a>
-      </li>
-    {% empty %}
-      <li>Задач немає :(</li>
-    {% endfor %}
-  </ul>
-{% endblock content %}
+    <div class="col-md-6 text-end">
+        <a href="{% url 'tasks:task-create' %}" class="btn btn-primary">Add New Task</a>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <ul class="list-group list-group-flush">
+            {% for task in tasks %}
+                <li class="list-group-item d-flex justify-content-between align-items-center py-3">
+                    <div>
+                        <a href="{% url 'tasks:task-detail' task.pk %}" class="fw-bold text-decoration-none text-dark fs-5">{{ task.title }}</a>
+                        <p class="mb-0 text-muted small">{{ task.description|truncatechars:60 }}</p>
+                    </div>
+                    <div>
+                        <a href="{% url 'tasks:task-update' task.pk %}" class="btn btn-sm btn-outline-secondary me-2">Edit</a>
+                        <a href="{% url 'tasks:task-delete' task.pk %}" class="btn btn-sm btn-outline-danger">Delete</a>
+                    </div>
+                </li>
+            {% empty %}
+                <li class="list-group-item text-center text-muted py-4">No tasks found. Create one to get started!</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}
